@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: 'postgres:latest'
+    environment:
+      - 'POSTGRES_DB=photosnap'
+      - 'POSTGRES_USER=${DB_USERNAME}'
+      - 'POSTGRES_PASSWORD=${DB_PASSWORD}'
+    ports:
+      - '5432:5432'
+    volumes:
+      - 'postgres_data:/var/lib/postgresql/data'  # Volume для сохранения данных БД
+
+  redis:
+    image: 'redis:latest'
+    command: redis-server --requirepass ${REDIS_PASSWORD}  # Пароль для Redis
+    ports:
+      - '6379:6379'
+    volumes:
+      - 'redis_data:/data'  # Volume для Redis
+
+
+volumes:
+  postgres_data:  # Именованный volume для PostgreSQL
+  redis_data:     # Именованный volume для Redis
