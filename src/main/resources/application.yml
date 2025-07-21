@@ -1,0 +1,33 @@
+spring:
+  application:
+    name: photosnap_java
+  datasource:
+    url: jdbc:postgresql://postgres:5432/photosnap
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+  data:
+    redis:
+      host: redis
+      port: 6379
+      password: ${REDIS_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  servlet:
+    multipart:
+      max-file-size: 25MB
+      max-request-size: 25MB
+  cache:
+    type: redis
+    redis:
+      time-to-live: 15000
+app:
+  storage:
+    upload-dir: ./uploads
+    allowed-extensions: jpg,jpeg,png,gif
+jwt:
+  secret-key: ${JWT_SECRET}
+  expiration: 86400000 # 24h
+  refresh-expiration: 604800000 #7d
