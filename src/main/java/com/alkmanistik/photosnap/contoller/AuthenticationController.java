@@ -5,6 +5,7 @@ import com.alkmanistik.photosnap.dto.request.RefreshTokenRequest;
 import com.alkmanistik.photosnap.dto.request.RegisterRequest;
 import com.alkmanistik.photosnap.dto.response.AuthenticationResponse;
 import com.alkmanistik.photosnap.service.AuthenticationService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,23 +21,23 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
     @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponse> register(
-            @RequestBody RegisterRequest request
+    public AuthenticationResponse register(
+            @Valid @RequestBody RegisterRequest request
     ) {
-        return ResponseEntity.ok(authenticationService.register(request));
+        return authenticationService.register(request);
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<AuthenticationResponse> authenticate(
+    public AuthenticationResponse authenticate(
             @RequestBody AuthenticationRequest request
     ) {
-        return ResponseEntity.ok(authenticationService.authenticate(request));
+        return authenticationService.authenticate(request);
     }
 
     @PostMapping("/refresh-token")
-    public ResponseEntity<AuthenticationResponse> refreshToken(
+    public AuthenticationResponse refreshToken(
             @RequestBody RefreshTokenRequest request
     ) {
-        return ResponseEntity.ok(authenticationService.refreshToken(request));
+        return authenticationService.refreshToken(request);
     }
 }
