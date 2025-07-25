@@ -8,6 +8,7 @@ import com.alkmanistik.photosnap.model.User;
 import com.alkmanistik.photosnap.repository.CommentRepository;
 import com.alkmanistik.photosnap.repository.LikeRepository;
 import com.alkmanistik.photosnap.repository.PostRepository;
+import com.alkmanistik.photosnap.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -23,6 +25,7 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
+    private final UserRepository userRepository;
     private final LikeRepository likeRepository;
     private final UserService userService;
     private final StorageService storageService;
@@ -81,5 +84,10 @@ public class PostService {
 
             likeRepository.save(like);
         }
+    }
+    public Page<Post> getPostsFromSubscriptions(UUID userId, Pageable pageable) {
+        Set<UUID> subscriptionIds = userRepository.findSubscriptionIdsByUserId(userId);
+
+        return postRepository.findByAuthorIdInAndPrivacy(subscriptionIds, false, pageable);
     }
 }

@@ -90,4 +90,29 @@ public class UserService {
     public List<User> searchPublicUsers(String query) {
         return userRepository.searchPublicUsers(query);
     }
+
+    public void subscribe(UUID subscriberId, UUID targetId) {
+        User subscriber = userRepository.findById(subscriberId)
+                .orElseThrow(() -> new UserNotFound("Subscriber not found"));
+        User target = userRepository.findById(targetId)
+                .orElseThrow(() -> new UserNotFound("Target user not found"));
+
+        subscriber.getSubscriptions().add(target);
+        userRepository.save(subscriber);
+    }
+
+    public void unsubscribe(UUID subscriberId, UUID targetId) {
+        User subscriber = userRepository.findById(subscriberId)
+                .orElseThrow(() -> new UserNotFound("Subscriber not found"));
+        User target = userRepository.findById(targetId)
+                .orElseThrow(() -> new UserNotFound("Target user not found"));
+
+        subscriber.getSubscriptions().remove(target);
+        userRepository.save(subscriber);
+    }
+
+    public List<User> getUserSubscriptions(UUID userId) {
+        return userRepository.findSubscriptionsByUserId(userId);
+    }
+
 }

@@ -69,6 +69,17 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Like> likes = new ArrayList<>();
 
+    @ManyToMany
+    @JoinTable(
+            name = "user_subscriptions",
+            joinColumns = @JoinColumn(name = "subscriber_id"),
+            inverseJoinColumns = @JoinColumn(name = "target_id")
+    )
+    private Set<User> subscriptions = new HashSet<>();
+
+    @ManyToMany(mappedBy = "subscriptions")
+    private Set<User> subscribers = new HashSet<>();
+
     @Data
     @Embeddable
     @Builder
